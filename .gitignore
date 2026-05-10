@@ -1,0 +1,37 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+logs/
+
+# Java
+target/
+*.class
+backend/.mvn/apache-maven-*/
+backend/.mvn/apache-maven-*-bin.zip
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Node
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Env
+.env
+.env.*
+application-local.yml
+
+# Runtime files
+*.pid
+*.tmp
+/.superpowers/
+
+# Large draft artifacts copied from chat inputs
+draft_input.docx
+draft_extracted.txt
