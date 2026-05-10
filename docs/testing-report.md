@@ -3,6 +3,7 @@
 ## 测试环境
 
 - 操作系统：Windows
+- 最后验证时间：2026-05-11 02:14（Asia/Shanghai）
 - Java：11.0.31
 - Node.js：本机 Node 环境
 - 数据库脚本：MySQL 8
