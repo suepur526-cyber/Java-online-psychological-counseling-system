@@ -3,6 +3,7 @@ import { defineConfig } from '@playwright/test'
 export default defineConfig({
   testDir: './tests',
   timeout: 45000,
+  workers: 1,
   webServer: {
     command: 'npm run dev -- --host 127.0.0.1 --port 15200 --strictPort',
     url: 'http://127.0.0.1:15200',
