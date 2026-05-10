@@ -14,7 +14,7 @@
 
 - 后端：Java 11、Spring Boot 2.7、MyBatis、MySQL 8
 - 前端：Vue 3、Vite、Element Plus、Axios、Pinia、Vue Router
-- 测试：Spring Boot Test、MockMvc、Vitest
+- 测试：Spring Boot Test、MockMvc、Vitest、Playwright
 - 数据库：MySQL，提供 `database/schema.sql` 和 `database/seed.sql`
 
 ## 项目结构
@@ -47,7 +47,7 @@ docker compose up -d
 
 ```text
 数据库：counseling_system
-地址：localhost:3306
+地址：127.0.0.1:13307
 用户：counseling
 密码：counseling123
 root 密码：root123456
@@ -57,7 +57,7 @@ root 密码：root123456
 
 1. 创建数据库或直接执行 `database/schema.sql`。
 2. 执行 `database/seed.sql` 添加测试数据。
-3. 如需修改连接信息，编辑 `backend/src/main/resources/application.yml`。
+3. 如需修改连接信息，编辑 `backend/src/main/resources/application.yml`。当前默认端口为 `13307`，避免和本机已有 MySQL 端口冲突。
 
 ## 后端运行
 
@@ -109,9 +109,25 @@ cd frontend
 npm run build
 ```
 
+端到端点选测试：
+
+```bash
+# 先启动 MySQL
+docker compose up -d mysql
+
+# 启动后端测试端口
+cd backend
+$env:SERVER_PORT="18100"
+.\mvnw.cmd spring-boot:run
+
+# 另开终端执行，Playwright 会自动启动 15200 前端
+cd ../frontend
+npm run test:e2e
+```
+
 ## 已验证内容
 
 - 后端 7 个集成测试全部通过。
 - 前端 3 个单元测试全部通过。
 - 前端生产构建成功。
-- Docker Desktop 当前机器未启动，因此未在本机完成 MySQL 容器全栈浏览器测试；项目已提供 Docker Compose 和 MySQL SQL 脚本。
+- Playwright 端到端点选测试 3 条流程全部通过，覆盖普通用户、心理老师、管理员核心操作。

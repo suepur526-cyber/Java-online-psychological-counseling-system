@@ -1,6 +1,6 @@
 <template>
   <el-container class="app-shell">
-    <el-aside width="252px" class="sidebar">
+    <el-aside width="252px" class="sidebar" data-testid="app-sidebar">
       <div class="logo">
         <div class="logo-icon">心</div>
         <div>

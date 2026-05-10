@@ -35,7 +35,7 @@
         <div v-for="question in detail.questions" :key="question.id" class="question-box">
           <strong>{{ question.questionName }}</strong>
           <el-radio-group v-model="answers[question.id]">
-            <el-radio v-for="option in parseOptions(question.optionsJson)" :key="option.value" :label="option.value">{{ option.label }}</el-radio>
+            <el-radio v-for="option in parseOptions(question.optionsJson)" :key="option.value" :value="option.value">{{ option.label }}</el-radio>
           </el-radio-group>
         </div>
       </div>

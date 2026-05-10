@@ -15,16 +15,16 @@
       <el-tabs v-model="mode" stretch>
         <el-tab-pane label="登录" name="login">
           <el-form :model="loginForm" label-position="top">
-            <el-form-item label="角色">
+            <el-form-item label="角色" data-testid="login-role">
               <el-segmented v-model="loginForm.role" :options="roleOptions" />
             </el-form-item>
             <el-form-item label="账号">
-              <el-input v-model="loginForm.account" placeholder="admin / 2022001 / T001" />
+              <el-input data-testid="login-account" v-model="loginForm.account" placeholder="admin / 2022001 / T001" />
             </el-form-item>
             <el-form-item label="密码">
-              <el-input v-model="loginForm.password" type="password" show-password placeholder="默认 123456，管理员 admin123" />
+              <el-input data-testid="login-password" v-model="loginForm.password" type="password" show-password placeholder="默认 123456，管理员 admin123" />
             </el-form-item>
-            <el-button type="primary" size="large" class="full" :loading="loading" @click="submitLogin">进入系统</el-button>
+            <el-button data-testid="login-submit" type="primary" size="large" class="full" :loading="loading" @click="submitLogin">进入系统</el-button>
           </el-form>
           <div class="demo-accounts">
             <span>测试账号：</span>
