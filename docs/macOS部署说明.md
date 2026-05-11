@@ -318,3 +318,41 @@ mysql --default-character-set=utf8mb4 -u counseling -p counseling_system < datab
 5. 使用测试账号按“功能验收路线”演示。
 
 如果现场网络不稳定，建议提前运行 `npm install` 和 Maven 依赖下载，避免临时下载依赖失败。
+
+## 12. 一键部署脚本
+
+如果你不想手动执行前面的步骤，可以直接在项目根目录运行：
+
+```bash
+bash scripts/mac-setup.sh
+```
+
+如果你更习惯双击文件，也可以在 Finder 里双击：
+
+```text
+scripts/mac-setup.command
+```
+
+这个脚本会尽量自动完成：
+
+- 检查 Homebrew
+- 安装 JDK 11、Node.js、Git
+- 提示并处理 Command Line Tools 问题
+- 自动打开或安装 Docker Desktop
+- 启动 MySQL 容器
+- 准备后端和前端运行环境
+
+如果环境已经准备好了，只想直接启动系统，可以再运行：
+
+```bash
+bash scripts/mac-start.sh
+```
+
+或者双击：
+
+```text
+scripts/mac-start.command
+```
+
+脚本会输出前端地址、后端地址和测试账号。  
+如果遇到 macOS 系统层面的确认窗口，按照窗口提示点一下就行，脚本会继续带你往下走。

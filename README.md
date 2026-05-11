@@ -30,6 +30,10 @@ docs/        设计文档、计划和测试报告
 
 - 需求与技术栈整理：`系统需求与技术栈整理.md`
 - macOS 部署说明：`docs/macOS部署说明.md`
+- Mac 一键部署脚本：`scripts/mac-setup.sh`
+- Mac 一键启动脚本：`scripts/mac-start.sh`
+- 双击入口：`scripts/mac-setup.command`、`scripts/mac-start.command`
+- 运行方式：在 Mac 终端进入项目根目录后执行 `bash scripts/mac-setup.sh`
 - 测试报告：`docs/testing-report.md`
 - 答辩准备 Word 文档：`docs/答辩准备与功能说明.docx`
 
