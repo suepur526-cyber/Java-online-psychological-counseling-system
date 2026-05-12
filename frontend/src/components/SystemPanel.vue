@@ -1,7 +1,12 @@
 <template>
   <div class="split-panels">
     <section>
-      <div class="panel-head"><h3>关于我们</h3></div>
+      <div class="panel-head stacked-head">
+        <div>
+          <h3>系统管理模块</h3>
+          <p>维护关于我们、平台简介和系统基础配置展示信息。</p>
+        </div>
+      </div>
       <el-form v-if="info" :model="info" label-position="top">
         <el-form-item label="标题"><el-input v-model="info.title" /></el-form-item>
         <el-form-item label="副标题"><el-input v-model="info.subtitle" /></el-form-item>
@@ -24,6 +29,8 @@
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { commonApi } from '../api/modules'
+
+defineProps({ mode: String })
 
 const info = ref(null)
 const configs = ref([])

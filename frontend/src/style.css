@@ -271,6 +271,18 @@ button, input, textarea {
   margin-bottom: 16px;
 }
 
+.stacked-head {
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.panel-head p,
+.panel-desc {
+  margin: 6px 0 0;
+  color: #6c7a86;
+  line-height: 1.6;
+}
+
 .panel-head h3,
 .sub-title {
   margin: 0 0 12px;
@@ -367,8 +379,19 @@ button, input, textarea {
   margin: 12px 0;
 }
 
+.info-lines {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+  color: #5f707a;
+  line-height: 1.5;
+}
+
 .card-actions {
   grid-column: 2;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .question-box,

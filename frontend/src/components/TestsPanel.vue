@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div class="panel-head">
-      <h3>在线心理测试</h3>
+    <div class="panel-head stacked-head">
+      <div>
+        <h3>{{ role === 'USER' ? '在线心理测试' : '心理测试管理' }}</h3>
+        <p>{{ role === 'USER' ? '选择心理测试并开始答题，系统会自动计算得分并保存测试记录。' : '维护心理测试、题库题目，并查看用户测试记录。' }}</p>
+      </div>
       <el-button v-if="role !== 'USER'" type="primary" @click="openTest()">新增测试</el-button>
     </div>
     <el-table :data="tests" stripe>

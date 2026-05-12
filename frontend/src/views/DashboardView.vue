@@ -47,19 +47,19 @@
 
         <section class="content-surface">
           <AnnouncementsPanel v-if="active === 'announcements'" :role="auth.role" :items="announcements" @refresh="loadAll" />
-          <TestsPanel v-else-if="active === 'tests'" :role="auth.role" :user="auth.user" @refresh="loadAll" />
-          <ServicesPanel v-else-if="active === 'services'" :services="services" @appoint="openAppointment" @consult="openConsultation" />
-          <AppointmentsPanel v-else-if="active === 'appointments'" :role="auth.role" :items="appointments" @reviewed="loadAll" />
-          <ConsultationsPanel v-else-if="active === 'consultations'" :role="auth.role" :items="consultations" :replies="replies" @replied="loadAll" />
-          <UsersPanel v-else-if="active === 'users'" :users="users" :teachers="teachers" @refresh="loadAll" />
-          <SystemPanel v-else-if="active === 'system'" />
+          <TestsPanel v-else-if="active === 'tests'" :role="auth.role" :user="auth.user" :mode="active" @refresh="loadAll" />
+          <ServicesPanel v-else-if="active === 'services' || active === 'teacherInfo' || active === 'serviceBooking' || active === 'userMessage'" :services="services" :mode="active" @appoint="openAppointment" @consult="openConsultation" />
+          <AppointmentsPanel v-else-if="active === 'appointments' || active === 'appointmentReview' || active === 'appointmentQuery'" :role="auth.role" :items="appointments" :mode="active" @reviewed="loadAll" />
+          <ConsultationsPanel v-else-if="active === 'consultations' || active === 'messageQuery' || active === 'consultationManage'" :role="auth.role" :items="consultations" :replies="replies" :mode="active" @replied="loadAll" />
+          <UsersPanel v-else-if="active === 'users' || active === 'teacherAudit'" :users="users" :teachers="teachers" :mode="active" @refresh="loadAll" />
+          <SystemPanel v-else-if="active === 'system'" :mode="active" />
           <HomePanel v-else :role="auth.role" :announcements="announcements" :services="services" />
         </section>
       </el-main>
     </el-container>
   </el-container>
 
-  <el-dialog v-model="appointmentVisible" title="提交预约" width="520px">
+  <el-dialog v-model="appointmentVisible" title="服务预约" width="520px">
     <el-form :model="appointmentForm" label-position="top">
       <el-form-item label="预约老师"><el-input v-model="appointmentForm.teacherName" disabled /></el-form-item>
       <el-form-item label="预约时间"><el-date-picker v-model="appointmentForm.appointmentTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" class="full" /></el-form-item>
@@ -71,7 +71,7 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="consultVisible" title="提交咨询" width="520px">
+  <el-dialog v-model="consultVisible" title="用户留言咨询" width="520px">
     <el-form :model="consultForm" label-position="top">
       <el-form-item label="咨询老师"><el-input v-model="consultForm.teacherName" disabled /></el-form-item>
       <el-form-item label="咨询内容"><el-input v-model="consultForm.content" type="textarea" :rows="6" /></el-form-item>
@@ -117,22 +117,38 @@ const consultForm = reactive({ teacherId: null, teacherName: '', content: '' })
 
 const menuSets = {
   USER: [
-    ['home', '首页', House], ['announcements', '公告信息', Bell], ['services', '心理服务', UserFilled],
-    ['tests', '在线测试', DataAnalysis], ['appointments', '我的预约', Calendar], ['consultations', '咨询与回复', ChatLineRound],
+    ['home', '首页', House], ['announcements', '公告信息', Bell], ['teacherInfo', '心理老师信息', UserFilled],
+    ['serviceBooking', '服务预约', Calendar], ['userMessage', '用户留言咨询', ChatLineRound],
+    ['tests', '在线心理测试', DataAnalysis], ['appointmentQuery', '服务预约查询', Calendar], ['messageQuery', '咨询回复查询', ChatLineRound],
   ],
   TEACHER: [
-    ['home', '工作台', House], ['appointments', '预约审核', Calendar], ['consultations', '咨询回复', ChatLineRound],
-    ['tests', '测试管理', DataAnalysis], ['announcements', '公告查看', Bell],
+    ['home', '工作台', House], ['appointmentReview', '服务预约审核', Calendar], ['appointmentQuery', '服务预约查询', Calendar],
+    ['consultationManage', '在线咨询管理', ChatLineRound], ['tests', '心理测试管理', DataAnalysis], ['announcements', '公告查看', Bell],
   ],
   ADMIN: [
-    ['home', '管理首页', House], ['users', '用户与老师', User], ['announcements', '公告管理', Bell],
-    ['tests', '测试管理', DataAnalysis], ['appointments', '预约管理', Calendar], ['consultations', '咨询管理', ChatLineRound], ['system', '系统管理', Setting],
+    ['home', '管理首页', House], ['users', '用户管理', User], ['teacherAudit', '心理老师信息', UserFilled],
+    ['announcements', '公告管理', Bell], ['tests', '心理测试管理', DataAnalysis],
+    ['appointmentReview', '服务预约审核', Calendar], ['appointmentQuery', '服务预约查询', Calendar],
+    ['consultationManage', '在线咨询管理', ChatLineRound], ['system', '系统管理模块', Setting],
   ],
 }
 
 const menus = computed(() => menuSets[auth.role].map(([key, label, icon]) => ({ key, label, icon })))
 const currentMenu = computed(() => menus.value.find((item) => item.key === active.value))
-const pageSubtitle = computed(() => auth.role === 'USER' ? '完成测试、预约与咨询流程' : auth.role === 'TEACHER' ? '处理预约、咨询回复与测试维护' : '统一管理平台业务数据')
+const pageSubtitles = {
+  teacherInfo: '查看心理老师资料、擅长领域、服务时间与收费信息',
+  serviceBooking: '在老师服务卡片中点击“服务预约”提交预约申请',
+  userMessage: '在老师服务卡片中点击“留言咨询”提交在线咨询内容',
+  tests: '维护或完成心理测试，并查看测试记录',
+  appointmentReview: '审核用户提交的服务预约，或查看预约审核记录',
+  appointmentQuery: '查询当前角色相关的预约申请、状态和审核回复',
+  messageQuery: '查询用户留言咨询内容和老师回复记录',
+  consultationManage: '查看在线咨询内容，并由心理老师进行回复管理',
+  users: '管理普通用户账号状态',
+  teacherAudit: '查看和审核心理老师账号信息',
+  system: '维护关于我们、平台介绍和系统基础配置',
+}
+const pageSubtitle = computed(() => pageSubtitles[active.value] || (auth.role === 'USER' ? '完成测试、预约与咨询流程' : auth.role === 'TEACHER' ? '处理预约、咨询回复与测试维护' : '统一管理平台业务数据'))
 
 async function loadAll() {
   const [ann, tea, svc, userRes, appt, cons, reply] = await Promise.all([

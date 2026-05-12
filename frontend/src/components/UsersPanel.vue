@@ -1,7 +1,8 @@
 <template>
   <div class="split-panels">
-    <section>
+    <section v-if="mode !== 'teacherAudit'">
       <h3>普通用户管理</h3>
+      <p class="panel-desc">管理员在这里查看普通用户信息，并启用或禁用用户账号。</p>
       <el-table :data="users" stripe>
         <el-table-column prop="studentNo" label="学号" width="120" />
         <el-table-column prop="name" label="姓名" width="100" />
@@ -17,8 +18,9 @@
       </el-table>
     </section>
 
-    <section>
-      <h3>心理老师审核</h3>
+    <section v-if="mode !== 'users'">
+      <h3>心理老师信息</h3>
+      <p class="panel-desc">这里展示心理老师账号信息，管理员可对待审核老师执行通过或驳回操作。</p>
       <el-table :data="teachers" stripe>
         <el-table-column prop="jobNo" label="工号" width="100" />
         <el-table-column prop="name" label="姓名" width="100" />
@@ -42,7 +44,7 @@ import { ElMessage } from 'element-plus'
 import { commonApi } from '../api/modules'
 import { labelOf, statusLabels } from '../utils/labels'
 
-defineProps({ users: Array, teachers: Array })
+defineProps({ users: Array, teachers: Array, mode: String })
 const emit = defineEmits(['refresh'])
 
 async function setUser(row, status) {
